@@ -1,0 +1,23 @@
+//hint either House[1]--House[n-1] or House[2]--House[n]
+
+//状态 i 到第i家了
+//dp数组 dp[i] 到第i家最高金额
+//选择 偷或者不偷
+//转移方程 dp[i] = max(nums[i]+dp[i-2],dp[i-1])
+class Solution {
+    public int rob(int[] nums) {
+        if(nums.length==1)return nums[0];
+
+        int[] dp1 = new int[nums.length+1];
+        int[] dp2 = new int[nums.length+1];
+        dp1[0] = 0; dp1[1] = nums[0];
+        dp2[1] = 0; dp2[2] = nums[1];
+
+        for(int i=1;i<nums.length-1;i++){
+            dp1[i+1] = Math.max(dp1[i],nums[i]+dp1[i-1]);
+            dp2[i+2] = Math.max(dp2[i+1],nums[i+1]+dp2[i]);
+        }
+
+        return Math.max(dp1[nums.length-1],dp2[nums.length]);
+    }
+}

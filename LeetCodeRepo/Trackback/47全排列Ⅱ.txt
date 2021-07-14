@@ -1,0 +1,41 @@
+/**
+ * 主要是考虑如何剪枝去重
+ * 选择列表 nums[]
+ * 路径 path 记录下标
+ * 6ms 17.69%  39.1MB 65.25%
+ * 虽然方法搓了点，但是出答案了还是阔以
+ * 思路是一致的，答案用的Boolean来标记是否遍历过数组。而且它的数组也是回溯来用，下去的时候赋值true，出来的时候赋值false。
+ */
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+    
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<Integer> path = new ArrayList<>();
+        trackback(nums,path);
+        return res;
+    }
+    public void trackback(int[] nums,List<Integer> path){
+        //回溯终止条件
+        if(path.size()==nums.length){
+            // System.out.println(path);
+            List<Integer> p = new ArrayList<>();
+            for(Integer i:path){
+                p.add(nums[i]);
+            }
+            res.add(p);
+            return;
+        }
+        List<Integer> temp = new ArrayList<>();
+        // System.out.println(path);
+        //遍历所有情况往递归，全排列不能用索引来操作。
+        //主要办法是要想如何剪枝,来一个一遍历的数组
+        for(int i=0;i<nums.length;i++){
+            if(temp.contains(nums[i]))continue;
+            if(path.contains(i))continue;           
+              path.add(i);
+              temp.add(nums[i]);
+              trackback(nums,path);
+              path.remove(path.size()-1);
+        }
+    } 
+}

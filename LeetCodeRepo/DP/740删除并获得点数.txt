@@ -1,0 +1,28 @@
+//状态： i 前i个数
+//dp数组: dp[i] 前i个数可获得最大点数
+//选择：这个数拿还是不拿
+//状态转移  dp[i+1] = arr[i]-1==arr[i-1]?Math.max(dp[i],dp[i-1]+arr[i]*map.get(arr[i])):dp[i]+arr[i]*map.get(arr[i]);
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        Map<Integer,Integer> map = new HashMap<>();
+        for(int num:nums){
+            map.put(num,map.getOrDefault(num,0)+1);
+        }
+        int[] arr = new int[map.size()];
+        int cnt = 0;
+        for(Integer key:map.keySet()){
+            arr[cnt++] = key;
+        }
+        Arrays.sort(arr);
+
+        int[] dp = new int[map.size()+1];
+        dp[0] = 0;
+        dp[1] = arr[0]*map.get(arr[0]);
+        for(int i=1;i<arr.length;i++){
+            dp[i+1] = arr[i]-1==arr[i-1]?Math.max(dp[i],dp[i-1]+arr[i]*map.get(arr[i])):dp[i]+arr[i]*map.get(arr[i]);
+        }
+
+        return dp[map.size()];
+
+    }
+}

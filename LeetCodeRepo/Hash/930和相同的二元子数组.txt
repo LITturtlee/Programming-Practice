@@ -1,0 +1,14 @@
+//前缀和,用给hash纪录前缀和的个数
+//goal = sum[j] - sum[i]  表示区间[i,j]的和
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        Map<Integer,Integer> cnt = new HashMap<>();
+        int sum = 0, res = 0;
+        for(int num:nums){
+            cnt.put(sum,cnt.getOrDefault(sum,0)+1);
+            sum += num;
+            res += cnt.getOrDefault(sum-goal,0);
+        }
+        return res;
+    }
+}

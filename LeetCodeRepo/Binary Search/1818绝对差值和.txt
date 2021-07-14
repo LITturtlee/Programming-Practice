@@ -1,0 +1,37 @@
+class Solution {
+    public int minAbsoluteSumDiff(int[] nums1, int[] nums2) {
+        final int MOD = 1000000007;
+        int[] sorted = nums1.clone();
+        Arrays.sort(sorted);
+        int sum = 0, max = 0;
+        for(int i=0;i<nums1.length;i++){
+            int diff = Math.abs(nums1[i]-nums2[i]);
+            sum = (sum+diff)%MOD;
+
+            int inx = binarySearch(sorted,nums2[i]);
+            
+            int delta = 0;
+            delta = Math.abs(sorted[inx] - nums2[i]);
+            if(inx>0) delta = Math.min(delta,Math.abs(sorted[inx-1]-nums2[i]));
+            
+            // System.out.println(inx+" "+nums2[i]+" "+delta);
+
+            max = Math.max(max,diff-delta);
+       }
+        return (sum - max+MOD)%MOD;
+    }
+    public int binarySearch(int[] sorted, int target){
+        int left = 0, right = sorted.length-1;
+        while(left<right){
+            int mid = left + (right-left)/2;
+            if(target==sorted[mid]){
+                return mid;
+            }else if(target>sorted[mid]){
+                left = mid + 1;
+            }else{
+                right = mid;
+            }
+        }
+        return left;
+    }
+}

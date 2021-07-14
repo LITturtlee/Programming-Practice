@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+//状态 走到一个节点上就是一个状态
+//选择 抢or不抢
+//dp数组 本题没有用dp数组
+//状态转移 dp[i] = Math.max(dp[i-1],dp[i-2]+root.val)
+//压缩为俩状态往下传，会来的时候还是那俩状态
+//从下往上走的时候返回自己该点的最大值和其俩子节点的和
+
+class Solution {
+    public int rob(TreeNode root) {
+        return traverse(root)[0];
+    }
+
+    //后续的方式来最终返回根节点的最大值 
+    //int[] temp  = {自身最大，俩子节点的最大的和}
+    public int[] traverse(TreeNode root){
+        //终止条件
+        if(root==null){
+            return new int[]{0,0};
+        }
+        //叶结点
+        if(root.left==null&&root.right==null){
+            return new int[]{root.val,0};
+        }
+        
+        int[] left = traverse(root.left);
+        int[] right = traverse(root.right);
+        int dpRoot = Math.max(root.val+left[1]+right[1],left[0]+right[0]);
+        return new int[]{dpRoot,left[0]+right[0]};
+
+    }
+}

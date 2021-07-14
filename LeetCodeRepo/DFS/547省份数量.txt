@@ -1,0 +1,70 @@
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+        int res = 0;
+        for(int i=0;i<isConnected.length;i++){
+            if(isConnected[i][i]==1){
+                res++;
+                dfs(isConnected,i,i);
+            }
+        }
+        // for(int i=0;i<isConnected.length;i++){
+        //     for(int j=0;j<isConnected.length;j++){
+        //         System.out.print(isConnected[i][j]);
+        //     }
+        //     System.out.println();
+        // }
+        return res;
+    }
+    
+    //
+    public void dfs(int[][] isConnected,int x,int y){
+        //终止条件
+        if(x>=isConnected.length||y>=isConnected.length||x>y||isConnected[x][y]==0){
+            return;
+        }
+        isConnected[x][y] = 0;
+        //往左
+        for(int i=x-1;i>=0;i--){
+            dfs(isConnected,i,y);
+        }
+        //往右
+        for(int i=x+1;i<isConnected.length;i++){
+            dfs(isConnected,i,y);
+        }
+        //往上
+        for(int j=y-1;j>=0;j--){
+            dfs(isConnected,x,j);
+        }
+        //往下
+        for(int j=y+1;j<isConnected.length;j++){
+            dfs(isConnected,x,j);
+        }
+    }
+}
+
+
+
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+        int provinces = isConnected.length;
+        boolean[] visited = new boolean[provinces];
+        int circles = 0;
+        for (int i = 0; i < provinces; i++) {
+            if (!visited[i]) {
+                dfs(isConnected, visited, provinces, i);
+                circles++;
+            }
+        }
+        return circles;
+    }
+
+    public void dfs(int[][] isConnected, boolean[] visited, int provinces, int i) {
+        for (int j = 0; j < provinces; j++) {
+            if (isConnected[i][j] == 1 && !visited[j]) {
+                visited[j] = true;
+                dfs(isConnected, visited, provinces, j);
+            }
+        }
+    }
+}
+

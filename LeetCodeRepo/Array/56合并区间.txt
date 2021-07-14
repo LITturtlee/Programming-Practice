@@ -1,0 +1,24 @@
+// 执行用时：8 ms, 在所有 Java 提交中击败了49.46%的用户
+// 内存消耗：41.1 MB, 在所有 Java 提交中击败了50.28%的用户
+/**
+ * 思路：对区间进行排序，遍历区间，比较当前区间起点与下一个区间的终点
+ */
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        List<int[]> res = new ArrayList<>();
+        if(intervals==null||intervals.length==0) return new int[0][];
+        Arrays.sort(intervals,(a,b)->a[0]-b[0]);
+        int[] cur = intervals[0];
+        for(int[] next:intervals){
+            //当前区间大于下一个区间的起点
+            if(cur[1]>=next[0]){
+                cur[1] = Math.max(cur[1],next[1]);
+            }else{
+                res.add(cur);
+                cur = next;
+            }
+        }
+        res.add(cur);
+        return res.toArray(new int[0][]);
+    }
+}

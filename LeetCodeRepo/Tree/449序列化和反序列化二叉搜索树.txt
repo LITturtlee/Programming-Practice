@@ -1,0 +1,76 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = preorder(root,new StringBuilder());
+        if(sb.length()>0){
+            sb.deleteCharAt(sb.length()-1);
+        }
+        // System.out.println(sb.toString());
+        return sb.toString();
+
+    }
+
+    /**
+     * 用前序遍历来恢复二叉树，String data转成链表，方便删除第一个元素
+     */
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if(data==null||data.equals("")){
+            return null;
+        }
+        LinkedList<Integer> nums = new LinkedList<>();
+        for(String s:data.split(",")){
+            nums.add(Integer.valueOf(s));
+        }
+        TreeNode root = buildTree(Integer.MIN_VALUE,Integer.MAX_VALUE,nums);
+        // System.out.println(nums);
+        return root;
+    }
+
+    /**
+     * sb：是引用对象，所以往下传改动后就算拿它也，sb也是会更新的。
+     */
+    public StringBuilder preorder(TreeNode root,StringBuilder sb){
+        if(root==null){
+            return sb;
+        }
+        sb.append(root.val+",");
+        preorder(root.left,sb);
+        preorder(root.right,sb);
+        return sb;
+
+    }
+
+    public TreeNode buildTree(int low, int high, LinkedList<Integer> nums ){
+        if(nums.isEmpty()){
+            return null;
+        }
+        int val = nums.getFirst();
+        if(val>high||val<low)return null;
+
+        TreeNode root  = new TreeNode(val);
+        nums.removeFirst();
+        root.left = buildTree(low,val,nums);
+        root.right = buildTree(val,high,nums);
+
+        return root;
+
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser = new Codec();
+// Codec deser = new Codec();
+// String tree = ser.serialize(root);
+// TreeNode ans = deser.deserialize(tree);
+// return ans;

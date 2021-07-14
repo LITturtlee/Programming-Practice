@@ -1,0 +1,38 @@
+/**
+ * 本题找的是组合，而非全排列,所以多传一个inx参数往下递归，并且不用像全排列一样用contain判断
+ * 
+ * 回溯这类题重要的一个优化方向就是剪枝
+ * 
+ * 选择列表 
+ * 路径 path
+ */
+
+class Solution {
+
+    
+
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        trackback(n,k,1,path,res);
+        return res;
+    }
+
+    public void trackback(int n, int k, int inx, List<Integer> path, List<List<Integer>> res){
+        //终止条件
+        if(path.size()==k){
+            res.add(new ArrayList<>(path));
+            return;
+        }
+
+        //遍历选择往下递归
+        for(int i=inx;i<n+1;i++){
+
+            //路径添加
+            path.add(i);
+            trackback(n,k,i+1,path,res);
+            //路径回溯
+            path.remove(path.size()-1);
+        }
+    }
+}

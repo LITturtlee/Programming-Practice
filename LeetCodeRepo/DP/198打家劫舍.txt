@@ -1,0 +1,16 @@
+//状态 i 要偷哪一家
+//dp数组 dp[i]  到第i家，此时能获得最高金额
+//选择  偷或者不偷
+//转移方程 dp[i] = max(nums[i] + dp[i-2],dp[i-1])  
+class Solution {
+    public int rob(int[] nums) {
+        int[] dp = new int[nums.length+1];
+        dp[0] = 0;
+        dp[1] = nums[0];
+
+        for(int i=1;i<nums.length;i++){
+            dp[i+1] = Math.max(dp[i],nums[i]+dp[i-1]);
+        }
+        return dp[nums.length];
+    }
+}

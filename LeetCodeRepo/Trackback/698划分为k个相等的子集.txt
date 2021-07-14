@@ -1,0 +1,77 @@
+//回溯+剪枝
+
+class Solution {
+
+
+    
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        //排序，带贪心思路，先用大的再用小的。
+        Arrays.sort(nums);
+        nums = sort(nums);
+        boolean[] used = new boolean[nums.length];
+        int sum = 0, target = 0;
+        for(int i=0;i<nums.length;i++){
+            sum += nums[i]; 
+        }
+        if(sum%k!=0)return false;
+        target = sum/k;
+        if(nums[0]>target)return false;
+        return backtrack(nums,used,k,0,target,0);
+    }
+
+
+    //向下递归k，如果k为1说明前k-1个都组合都符合要求
+    //用used[]作为路径记录，避免重复使用nums
+    //因为nums被sort，如果continue，说明和大了，往下走就不用i=0开始
+    //用一个sum来标记当前和是否为target
+    public boolean backtrack(int[] nums,boolean[] used,int k,int beginInx,int target,int cruSum){
+        // System.out.println(cruSum);
+        //终止条件
+        if(k==1)return true;
+        //如果当前cursum==target直接向下走(剪枝)
+        if(cruSum==target){
+            return backtrack(nums,used,k-1,0,target,0);
+        }
+        //循环选择向下递归,遍历nums[]进行选择
+        for(int i=beginInx;i<nums.length;i++){
+            //nums已使用以及不和标准直接continue;
+            if(cruSum+nums[i]>target||used[i])continue;
+
+            used[i] = true;
+            //如果下去回来一个true直接结算递归
+            
+            //这里beginInx用i+1是因为本来这个东西是有序的，只有i+1之后的相加才有可能不大于target
+            if(backtrack(nums,used,k,i+1,target,cruSum+nums[i])) return true;
+            used[i] = false;
+
+            //从这出来后还可以剪枝，因为排过序，所以如果相同的数字这里不用再弄
+            while(i<nums.length-1&&nums[i+1]==nums[i])i++;
+        }
+
+        //无合适情况
+        return false;
+    }
+
+
+    //把Arrays.sort的排序进行逆序
+    public static int[] sort(int[] a){
+        int[] temp = a;
+
+        if(temp.length%2==0){
+            //数组里面的个数为偶数
+            for (int i = 0; i <= temp.length/ 2; i++) {
+                int temp1 = a[i];
+                temp[i]=temp[temp.length-1-i];
+                temp[temp.length - 1-i] = temp1;
+            }
+        }else{
+            //数组里面的个数为奇数
+            for (int i = 0; i < temp.length / 2; i++) {
+                int temp1 = a[i];
+                temp[i]=temp[temp.length-1-i];
+                temp[temp.length - 1-i] = temp1;
+            }
+        }
+        return  temp;
+}
+}

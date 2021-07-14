@@ -1,0 +1,24 @@
+/**
+ * 需要查找一篇文献，其引用数>=h,且其它引用数要<=h，h = n - 某个下标 + 1
+ */
+
+
+class Solution {
+    public int hIndex(int[] citations) {
+        // if(citations.length==1){
+        //     return citations[0]>0?1:0;
+        // }
+        int left = 0, right = citations.length -1;
+        while(left<right){
+            int mid = left + (right - left)/2;
+            int h = citations.length - mid;
+            if(citations[mid]>=h){
+                right = mid;
+            }else if(citations[mid]<h){
+                left = mid + 1;
+            }
+        }
+        if(citations[right]==0)return 0;
+        return citations.length - right;
+    }
+}

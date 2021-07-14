@@ -1,0 +1,27 @@
+//思路：遍历区间集合，然后比较待插入的区间与当前区间的关系
+//重点：要同时更新newInterval
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> res = new ArrayList<>();
+        //遍历区间集合，每个区间存在3种:刚好可插入、有交集更新区间、还没到插入点情况
+        for(int[] cur:intervals){
+            //刚合适
+            if(newInterval!=null&&cur[0]>newInterval[1]){
+                res.add(newInterval);
+                res.add(cur);
+                //插入后更新
+                newInterval=null;
+            //区间存在交集
+            }else if(newInterval!=null&&cur[1]>=newInterval[0]){
+                newInterval[0] = Math.min(cur[0],newInterval[0]);
+                newInterval[1] = Math.max(cur[1],newInterval[1]);
+            //还未到
+            }else{
+                res.add(cur);
+            } 
+        }
+        //若在最末尾
+        if(newInterval!=null)res.add(newInterval);
+        return res.toArray(new int[res.size()][]);
+    }
+}

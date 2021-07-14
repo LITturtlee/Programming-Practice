@@ -1,0 +1,34 @@
+/**
+ * 先二分找俩有序数组，确定target在那个数组中，在那个数组中进行二分搜索。
+ */
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length -1 ;
+
+        while(left<=right){
+            int mid = left + (right - left)/2;
+            if(nums[mid]==target){
+                return mid;
+            }
+            //0-mid是有序
+            else if(nums[0]<=nums[mid]){
+                //判断target在那
+                if(target>=nums[0]&&target<nums[mid]){
+                    right = mid - 1;
+                }else{
+                    left = mid + 1;
+                }
+            }
+            //mid+1-right是有序
+            else{
+                if(target>nums[mid]&&target<=nums[right]){
+                    left = mid + 1;
+                }else{
+                    right = mid -1 ;
+                }
+            }
+        }
+        return -1;
+    }
+}

@@ -1,0 +1,39 @@
+class Solution {
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        //处理输入,搞成左边点
+        List<int[]> points = new ArrayList<>();
+        for(int[] point:buildings){
+            int left = point[0], right = point[1], height = point[2];
+            points.add(new int[]{left,-height});
+            points.add(new int[]{right,height});
+        }
+        
+        //所有坐标点排序，没有用到线段树本题，对于计算举行面积用到了线段树
+        Collections.sort(points,(a,b)->{
+            if(a[0]!=b[0])return a[0]-b[0];
+            return a[1]-b[1];
+        });
+
+        //遍历所有points，用优先队列维护大根堆
+        int pre = 0;
+        PriorityQueue<Integer> heap = new PriorityQueue<>((a,b)->{return b-a;});
+        heap.add(pre);
+        for(int[] point:points){
+            //加入堆，扯出堆
+            if(point[1]<0)heap.add(-point[1]);
+            else heap.remove(point[1]);
+            
+            int cur = heap.peek();
+            //判断是否更新结果
+            if(cur!=pre){
+                res.add(new ArrayList<>(Arrays.asList(point[0],cur)));
+                pre = cur;
+            }
+        }
+
+
+        return res;
+    }
+}
