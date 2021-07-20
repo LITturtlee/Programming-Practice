@@ -1,0 +1,19 @@
+//状态 第i天 
+//选择 买，卖，不操作 ()
+//dp数组 dp[i]  第i天可获得的最大利润
+//状态转移方程
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        if(prices.length==0)return 0;
+        int[] dp = new int[prices.length];
+        //basecase
+        dp[0] = -prices[0];
+        int minCost = prices[0]; 
+        for(int i=1;i<prices.length;i++){
+            dp[i] = Math.max(dp[i-1],prices[i]-minCost);
+            minCost = Math.min(minCost,prices[i]);
+        }
+        return dp[prices.length-1]>0?dp[prices.length-1]:0;
+    }
+}

@@ -1,0 +1,32 @@
+//类似1143 最长公共子序列
+class Solution {
+    public int minimumDeleteSum(String s1, String s2) {
+        char[] cs1 = s1.toCharArray();
+        char[] cs2 = s2.toCharArray();
+        int m = s1.length()+1, n = s2.length()+1;
+        int[][] dp = new int[m][n];
+        for(int i=1;i<m;i++){
+            for(int j=1;j<=i;j++){
+                dp[i][0]+=cs1[j-1];
+            }
+        }
+        for(int i=1;i<n;i++){
+            for(int j=1;j<=i;j++){
+                dp[0][i]+=cs2[j-1];
+            }
+        }
+        
+        for(int i=1;i<m;i++){
+            for(int j=1;j<n;j++){
+                //因为dp索引比字符串大1，所有这里判断是否相等要减1
+                if(cs1[i-1]==cs2[j-1]){
+                    dp[i][j] = dp[i-1][j-1];
+                }else{
+                    dp[i][j] = Math.min((cs1[i-1]+dp[i-1][j]),(cs2[j-1]+dp[i][j-1]));
+                }
+            }
+        }
+
+        return dp[m-1][n-1];
+    }
+}

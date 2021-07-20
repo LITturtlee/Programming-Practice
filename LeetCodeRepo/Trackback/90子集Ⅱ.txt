@@ -1,0 +1,33 @@
+class Solution {
+
+    List<List<Integer>> res = new ArrayList<>();
+
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<Integer> path = new ArrayList<>();
+        Boolean[] visted = new Boolean[nums.length];
+        Arrays.sort(nums);
+        trackback(nums,path,visted,nums.length,0);
+        return res;
+    }
+
+     public void trackback(int[] nums, List<Integer>path, Boolean[] visted, int len, int idx){
+        res.add(new ArrayList<>(path));
+        if(path.size()==len){
+            return;
+        }
+
+        for(int i=idx;i<len;i++){
+            if(i>0&&nums[i]==nums[i-1]&&!visted[i-1])continue;
+            path.add(nums[i]);
+            visted[i] = true;
+            // if(res.contains(path)){
+                // path.remove(path.size()-1);
+                // continue;
+            // }
+            trackback(nums,path,visted,len,i+1);
+            visted[i] = false;
+            path.remove(path.size()-1);
+        }
+
+    }
+}

@@ -1,0 +1,30 @@
+//实际上是两组dp数组的动态规划，两组二维dp数组
+//股票Ⅱ是两组一位动态数组的规划
+//但是两组动态规划数组是存在相互关联的关系的。
+
+//状态 i第几天 j还有几次操作 k是否持有
+//dp[i][j][k] 含义：在前i天,还有j次操作机会,当前是否持有 状态下的最大收益
+//选择：买入，卖出，无操作
+//状态转移方程
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[][][] dp = new int[prices.length][3][2];
+        //basecase
+        dp[0][2][0] = 0;
+        dp[0][2][1] = -prices[0];
+        dp[0][1][0] = 0;
+        dp[0][1][1] = -prices[0];
+        dp[0][0][0] = 0;
+        dp[0][0][1] = -prices[0];
+        //迭代
+        for(int i=1;i<dp.length;i++){
+            for(int j=1;j<3;j++){
+                dp[i][j][0] = Math.max(dp[i-1][j][0],dp[i-1][j][1]+prices[i]);
+                dp[i][j][1] = Math.max(dp[i-1][j][1],dp[i-1][j-1][0]-prices[i]);
+            }
+        }
+
+        return dp[prices.length-1][2][0];
+    }
+}
