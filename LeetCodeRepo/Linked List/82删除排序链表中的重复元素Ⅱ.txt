@@ -1,0 +1,62 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+ //强行加双指针标签,个人觉得链表题普遍都会这样
+ //本题用的方法是带头结点的方法。
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode res = head;
+        ListNode i = head, j = head;
+        ListNode pre = null;
+        boolean count = false;
+        while(j!=null){
+            j = j.next;
+            //下一个与当前i点相同接着往下走
+            if(j!=null&&j.val==i.val){
+                count = true;
+                continue;
+            }else{
+                if(count&&pre!=null)pre.next = j;
+                else if(count&&pre==null) res= j;
+                else pre = i;
+                i = j;
+                count=false;
+            }
+        }
+        return res;
+    }
+}
+
+
+// class Solution {
+//     public ListNode deleteDuplicates(ListNode head) {
+//         if (head == null) {
+//             return head;
+//         }
+        
+//         ListNode dummy = new ListNode(0, head);
+
+//         ListNode cur = dummy;
+//         while (cur.next != null && cur.next.next != null) {
+//             if (cur.next.val == cur.next.next.val) {
+//                 int x = cur.next.val;
+//                 while (cur.next != null && cur.next.val == x) {
+//                     cur.next = cur.next.next;
+//                 }
+//             } else {
+//                 cur = cur.next;
+//             }
+//         }
+
+//         return dummy.next;
+//     }
+// }
+

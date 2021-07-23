@@ -1,0 +1,29 @@
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<Integer> path = new ArrayList<>();
+        boolean[] visted = new boolean[candidates.length];
+        //Arrays.sort(scores,Collections.reverseOrder());
+        Arrays.sort(candidates);
+        backtrack(candidates,visted,path,target,0);
+        return res;
+    }
+
+    public void backtrack(int[] candidates,boolean[] visted,List<Integer> path, int target, int idx){
+        if(target==0){
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        //遍历选择列表
+        for(int i=idx;i<candidates.length;i++){
+            //选择(剪枝)
+            if(candidates[i]>target)return;
+            if(i>0&&!visted[i-1]&&candidates[i]==candidates[i-1])continue;
+            path.add(candidates[i]);
+            visted[i] = true;
+            backtrack(candidates,visted,path,target-candidates[i],i+1);
+            visted[i] = false;
+            path.remove(path.size()-1);
+        }
+    }
+}

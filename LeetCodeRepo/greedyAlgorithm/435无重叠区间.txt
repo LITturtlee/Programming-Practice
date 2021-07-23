@@ -1,0 +1,25 @@
+//贪心于动态规划的区别：贪心算法不是对所有问题都能得到整体最优解，关键是贪心策略的选择，选择的贪心策略必须具备无后效性，即某个状态以前的过程不会影响以后的状态，只与当前状态有关。
+//而动态规划的关键是状态的转移，当前状态会与前面一个或多个状态有关。
+//区间调度：即最多有几个不重叠的区间，时间段内可以参加几个活动
+//问题基础：区间调度
+//贪心思路：每次选择结束最早的区间
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        Arrays.sort(intervals,new Comparator<int[]>(){
+            public int compare(int[] a,int[] b){
+                //从小到大
+                return a[1]-b[1];
+            }
+        });
+        //最少有一个不重叠的区间
+        int count = 1;
+        int end = intervals[0][1];
+        for(int[] interval:intervals){
+            if(interval[0]>=end){
+                count++;
+                end = interval[1];
+            }
+        }
+        return intervals.length - count;
+    }
+}

@@ -1,0 +1,18 @@
+class Solution {
+    public int longestPalindrome(String s) {
+        int res = 0, odd = 0, even = 0;
+        char[] chars = s.toCharArray();
+        Map<Character,Integer> map = new HashMap<>();
+        for(char c:chars){
+            map.put(c,map.getOrDefault(c,0)+1);
+        }
+        for(Integer nums:map.values()){
+            if(nums%2==0)even+= nums;
+            else{
+                even+= nums/2*2;
+                odd+=1;
+            }
+        }
+        return odd>0?even+1:even;
+    }
+}

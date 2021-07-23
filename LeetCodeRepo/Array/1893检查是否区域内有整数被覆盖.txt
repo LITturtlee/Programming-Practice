@@ -1,0 +1,44 @@
+//思路合并区间,然后寻找目标是否落在一个区间中
+// class Solution {
+//     public boolean isCovered(int[][] ranges, int left, int right) {
+//         Arrays.sort(ranges,new Comparator<int[]>(){
+//             public int compare(int[] a, int[] b){
+//                 if(a[0]==b[0])return a[1]-b[1];
+//                 return a[0]-b[0];
+//             }
+//         });
+//         List<int[]> intervals = new ArrayList<>();
+//         int low = ranges[0][0], high = ranges[0][1];
+//         for(int i=1;i<ranges.length;i++){
+//             if(ranges[i][0]-high<=1)high = Math.max(high,ranges[i][1]);
+//             else{
+//                 intervals.add(new int[]{low,high});
+//                 low = ranges[i][0];
+//                 high = ranges[i][1];
+//             }
+//         }
+//         intervals.add(new int[]{low,high});
+//         for(int[] interval:intervals){
+//             if(left>=interval[0]&&right<=interval[1])return true;
+//         }
+//         return false;
+//     }
+// }
+
+//优化:寻找每区间与目标区间的重叠
+class Solution {
+    public boolean isCovered(int[][] ranges, int left, int right) {
+        boolean[] res = new boolean[51];
+        for(int[] range: ranges){
+            int l = Math.max(left,range[0]);
+            int r = Math.min(right,range[1]);
+            for(int i=l;i<=r;i++){
+                res[i] = true;
+            }
+        }
+        for(int i=left;i<=right;i++){
+            if(!res[i])return false;
+        }
+        return true;
+    }
+}

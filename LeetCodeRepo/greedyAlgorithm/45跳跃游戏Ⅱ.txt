@@ -1,0 +1,34 @@
+//动态规划
+// class Solution {
+//     public int jump(int[] nums) {
+//         int[] dp = new int[nums.length];
+//         Arrays.fill(dp,Integer.MAX_VALUE);
+//         dp[0] = 0;
+//         for(int i=1;i<nums.length;i++){
+//             for(int j=0;j<i;j++){
+//                 if(nums[j]>=i-j){
+//                     dp[i] = Math.min(dp[i],dp[j]+1);
+//                 }
+//             }
+//         }
+//         return dp[nums.length-1];
+//     }
+// }
+
+//贪心:每一个步会走出一个范围，下一步在这个范围中走
+//一次跳跃是在一个范围内跳跃,一共几个不相交的范围就是几步
+class Solution {
+    public int jump(int[] nums) {
+        int end = 0;
+        int farthest = 0;
+        int jump = 0;
+        for(int i=0;i<nums.length-1;i++){
+            farthest = Math.max(farthest,i+nums[i]);
+            if(i==end){
+                jump++;
+                end = farthest;
+            }
+        }
+        return jump;
+    }
+}

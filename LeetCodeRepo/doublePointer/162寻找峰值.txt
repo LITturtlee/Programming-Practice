@@ -1,0 +1,38 @@
+// class Solution {
+//     public int findPeakElement(int[] nums) {
+//         if(nums.length==1)return 0;
+//         if(nums[0]>nums[1])return 0;
+//         for(int i=1;i<nums.length-1;i++){
+//             if(nums[i]>nums[i-1]&&nums[i]>nums[i+1]){
+//                 return i;
+//             }
+//         }
+//         if(nums[nums.length-1]>nums[nums.length-2])return nums.length-1;
+//         return 0;
+//     }
+// }
+
+
+//本题取了给巧,因为本题不存在相邻两点的值相同的情况
+// class Solution {
+//     public int findPeakElement(int[] nums) {
+//         for(int i=0;i<nums.length-1;i++){
+//             if(nums[i]>nums[i+1])return i;
+//         }
+//         return nums.length-1;
+//     }
+// }
+
+//二分
+//其实还是利用了相邻两点不同,第一个出现nums[i]>nums[i+1]的点就是山峰的性质
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int left = 0, right = nums.length-1;
+        while(left<right){
+            int mid = left + (right-left)/2;
+            if(nums[mid]>nums[mid+1])right= mid;
+            else left = mid+1;
+        }
+        return left;
+    }
+}

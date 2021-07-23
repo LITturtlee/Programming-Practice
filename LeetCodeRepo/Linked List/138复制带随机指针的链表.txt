@@ -1,0 +1,42 @@
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+//用map存下新节点与老节点的映射关系
+class Solution {
+    public Node copyRandomList(Node head) {
+        if(head==null)return null;
+        Map<Node,Node> map = new HashMap<>();
+        Node newHead = new Node(head.val);
+        newHead.random = head.random;
+        map.put(head,newHead);
+        Node preNode = newHead;
+        head = head.next;
+        while(head!=null){
+            Node curNode = new Node(head.val);
+            curNode.random = head.random;
+            map.put(head,curNode);
+            preNode.next = curNode;
+            preNode = curNode;
+            head = head.next;
+        }
+        Node node = newHead;
+        while(node!=null){
+            Node random = map.get(node.random);
+            node.random = random;
+            node = node.next;
+        }
+        return newHead;
+    }
+}

@@ -1,0 +1,67 @@
+// //回溯思路:三个指针相同处往下递归
+// //回溯终止条件:1、k顺利到底  2、k在中间，无可选字母
+// class Solution {
+//     boolean res = false;
+//     char[] cs1, cs2, cs3;
+//     public boolean isInterleave(String s1, String s2, String s3) {
+//         cs1 = s1.toCharArray();
+//         cs2 = s2.toCharArray();
+//         cs3 = s3.toCharArray();
+//         if(cs1.length+cs2.length!=cs3.length)return false;
+//         trackback(0,0,0);
+//         return res;
+//     }
+//     //缺乏剪枝和备忘录,但是我不晓得该去备忘什么东西
+//     public void trackback(int i, int j, int k){
+//         //成功终止条件
+//         if(res||k==cs3.length){
+//             res = true;
+//             return;
+//         }
+//         if(i==cs1.length||j==cs2.length){
+//             while(j<cs2.length){
+//                 if(cs3[k]!=cs2[j])return;
+//                 k++;j++;
+//             }
+//             while(i<cs1.length){
+//                 if(cs3[k]!=cs1[i])return;
+//                 k++;i++;
+//             }
+//             res = true;
+//             return;
+//         }
+//         if(cs3[k]!=cs1[i]&&cs3[k]!=cs2[j]){
+//             return;
+//         }
+//         //遍历选择,因为只考虑true false 所以不用记录路径
+//         if(cs3[k]==cs1[i]&&cs3[k]==cs2[j]){
+//             trackback(i+1,j,k+1);
+//             trackback(i,j+1,k+1);
+//         }else if(cs3[k]==cs1[i]){
+//             trackback(i+1,j,k+1);
+//         }else{
+//             trackback(i,j+1,k+1);
+//         }
+//     }
+// }
+
+//dp[i][j] : s1前i和s2前j个元素是可以交替构成s3的前i+j给字符串
+//每个状态都是遍历完了的  不存在同一字母只有一种情况  遍历的是i,j 所以状态是遍历完全的
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if(s1.length()+s2.length()!=s3.length())return false;
+        boolean[][] dp = new boolean[s1.length()+1][s2.length()+1];
+        dp[0][0] = true;
+        for(int i=0;i<s1.length()+1;i++){
+            for(int j=0;j<s2.length()+1;j++){
+                if(i>0){
+                    dp[i][j] = (dp[i][j]||(dp[i-1][j]&&s1.charAt(i-1)==s3.charAt(i+j-1)));
+                }
+                if(j>0){
+                    dp[i][j] = (dp[i][j]||(dp[i][j-1]&&s2.charAt(j-1)==s3.charAt(i+j-1)));
+                }
+            }
+        }
+        return dp[s1.length()][s2.length()];
+    }
+}

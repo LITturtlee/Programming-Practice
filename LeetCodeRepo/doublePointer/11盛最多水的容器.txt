@@ -1,0 +1,15 @@
+//本题的利用双指针执行贪心选择，移动短板保证是能提升面积。
+
+class Solution {
+    public int maxArea(int[] height) {
+        int left = 0, right = height.length -1;
+        int max = 0;
+        while(left<right){
+            int shortBoard = Math.min(height[left],height[right]);
+            max = Math.max(max,(right-left)*shortBoard);
+            if(height[left]<height[right])left++;
+            else right--;
+        }
+        return max;
+    }
+}
